@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="drag" style="width: 100px; height: 100px; background-color: black; position: absolute;"></div>
+   <div id="first" style=" width: 100px; height: 100px; background-color:red;"></div> 
+   <br>
+    <div id="second" class="ortak" style="width: 100px; height: 100px; background-color:red;"></div>
+    <br>
+    <div id="three" class="ortak" style="width: 100px; height: 100px; background-color:red;"></div>
+    <div id="clean"></div>
+</body>
+<script>
+  for(let i=0; i<4;i++)
+{
+let yenikutu=document.createElement("div")
+yenikutu.id="dr "+i
+yenikutu.style.width="100px";
+yenikutu.style.height="100px";
+yenikutu.style.backgroundColor="blue"
+yenikutu.style.marginTop="70px"
+document.getElementById("clean").appendChild(yenikutu)
+}  
+let currentDroppable = null;
+let a;
+let target1=document.getElementById("first")
+let target2=document.getElementById("second")
+let target3=document.getElementById("three")
+
+target2.addEventListener("click",clicked)
+target3.addEventListener("click",clicked1)
+    function clicked(e)
+    {
+        e.preventDefault();
+        console.log("2 ye tıkladın")
+      
+    }
+
+    function clicked1(e)
+    { 
+        if(e.target.matches("#three"))
+       // if(e.target==document.getElementById("three"))
+        {
+            console.log("3e tıkladın")
+        }
+    }
+let el=document.getElementById("drag")
+
+el.addEventListener("mousedown",start)
+
+function start()
+{
+  addEventListener("mousemove",move)
+}
+ function move(e)
+ {
+     el.style.left=e.pageX-50+"px";
+     el.style.top=e.pageY-50+"px";
+    
+     el.hidden = true;
+     let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
+     el.hidden = false;
+     if (!elemBelow) return;
+      
+              let droppableBelow = elemBelow.closest("#second");
+              if (currentDroppable != droppableBelow) {
+                if (currentDroppable) { 
+                  el.style.backgroundColor="green"
+                  console.log("leaveDroppable")
+                  a=5
+                }
+                currentDroppable = droppableBelow;
+                if (currentDroppable) { 
+                  el.style.backgroundColor="yellow" // doğru yerdeyse
+                  console.log("enterdropable")
+                  
+                  a=7
+                }
+              }
+   
+ }
+ 
+
+ el.addEventListener("mouseup",leave)
+
+ function leave(){
+     if(a==7)
+     {
+        el.style.left="200px";
+        el.style.top="200px";
+     }
+     else 
+     {
+        el.style.left="20px";
+        el.style.top="20px";
+     }
+     
+console.log("bitti") 
+removeEventListener("mousemove",move)
+ }
+
+</script>
+</html>
